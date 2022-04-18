@@ -1,55 +1,46 @@
 extends Node2D
 
 var tile_scene = load("res://Scenes/Tile.tscn")
-var grid_size = 5 
+
+# represents number of tiles
+var world_size = 5 
+
 # base this from image size
 # isometric boxes have 2:1 width:height ratio
 var tile_width = 256 
 var tile_height = 128 
+
 onready var sorter = get_node("YSort")
 
 
 func _ready():
-	init_map()
+	draw_world()
 
 # add process for checking current mouse pointer location
 func _process(delta):
+	# for debugging
 	track_mouse_loc()
 
-func init_map(): 
-	
-	# go through rows
-	for row in range(grid_size):
-		# then go through column of row
-		for col in range(grid_size):
-			var x = row * tile_width / 2
-			# to match one is to one correspondence with reference tile
-				# essentially without having the tile width, the isometric equivalent of the transformation 
-				# equals twice what a single tile takes space. ; >
-				# https://www.youtube.com/watch?v=04oQ2jOUjkU
-			# this code however is taken from this article which IMO 
-				# is much simpler. https://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-primer-for-game-developers-updated--cms-28392
-			var y = col * tile_height 
-			placeTile(x, y)
+func draw_world(): 
+	for x in world_size:
+		for y in world_size:
+			draw_tile(x, y)
 
+func draw_tile(x, y):
+	# resize i_hat and j_hat vectors accoriding to tile width and height	
+		# divide tile_width by 2 since original takes more than 2 reference tiles
+		# ref tile is 1:1
+	var i_hat = Vector2(1 * tile_width / 2, 0.5 * tile_height)
+	var j_hat = Vector2(-1 * tile_width / 2, 0.5 * tile_height)
+	# note tile position/pivot is in bottom left of sprite
 
-func placeTile(x, y):
-	var isometric_coord = cartestionToIsometric(x, y)
-	# var isometric_coord = Vector2(x, y) # just a placeholder really a cartesian
-	# instance new tile
+	var tile_position: Vector2 = (x * i_hat) + (y * j_hat)
+
 	var tile = tile_scene.instance()
-	# set position to isometric coord
-	tile.position = isometric_coord
-	sorter.add_child(tile)
+	tile.position = tile_position
 
-func cartestionToIsometric(x, y):
-	var isometric_coord = Vector2()
-
-	isometric_coord.x = x - y
-	isometric_coord.y = (x + y) / 2
-
-
-	return isometric_coord
+	# YSort arranges draw order by y position. 
+	get_node("YSort").add_child(tile)
 
 func track_mouse_loc():
 	var mouse_pos = get_global_mouse_position()
