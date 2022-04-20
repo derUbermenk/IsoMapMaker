@@ -1,8 +1,6 @@
 extends Node2D
 
-var hex_tile_coord = "res://Scenes/HexTile.tscn"
-var tile_coord = "res://Scenes/Tile.tscn"
-var tile_scene = load(hex_tile_coord)
+var tile_scene = load("res://Scenes/Tile.tscn")
 
 # represents number of tiles
 var world_size = 5 
@@ -25,30 +23,13 @@ func _process(delta):
 	track_mouse_loc()
 
 func draw_world(): 
-	for y in world_size:
-		for x in world_size:
-			if y % 2 != 0:
+	for row in world_size:   # y
+		for col in world_size: # x
+			var x = col
+			var y = row * y_off
+			if row % 2 != 0:
 				x -= 0.5	
-			draw_hex_tile(x, y)
-
-func draw_hex_tile(x, y):
-	# resize i_hat and j_hat vectors accoriding to tile width and height	
-		# divide tile_width by 2 since original takes more than 2 reference tiles
-		# ref tile is 1:1
-	var i_hat = Vector2(1 * tile_width / 2, 0.5 * tile_height)
-	var j_hat = Vector2(-1 * tile_width / 2, 0.5 * tile_height)
-	# note tile position/pivot is in bottom left of sprite
-
-
-	var tile_position: Vector2 = (x * i_hat) + (y * y_off * j_hat)
-
-	var tile = tile_scene.instance()
-	tile.position = tile_position
-
-	# YSort arranges draw order by y position. 
-	get_node("YSort").add_child(tile)
-
-
+			draw_tile(x, y)
 
 func draw_tile(x, y):
 	# resize i_hat and j_hat vectors accoriding to tile width and height	
@@ -58,9 +39,11 @@ func draw_tile(x, y):
 	var j_hat = Vector2(-1 * tile_width / 2, 0.5 * tile_height)
 	# note tile position/pivot is in bottom left of sprite
 
-	var tile_position: Vector2 = (x * i_hat) + (y * j_hat)
+
+	var tile_position: Vector2 = (x * i_hat) + (y *  j_hat)
 
 	var tile = tile_scene.instance()
+	tile.type = "hex"
 	tile.position = tile_position
 
 	# YSort arranges draw order by y position. 

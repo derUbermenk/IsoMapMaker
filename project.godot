@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Tile",
+"language": "GDScript",
+"path": "res://Scenes/Tile.gd"
+} ]
+_global_script_class_icons={
+"Tile": ""
+}
+
 [application]
 
 config/name="Iso Map Maker"
