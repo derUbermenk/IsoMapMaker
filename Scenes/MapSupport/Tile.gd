@@ -1,7 +1,5 @@
 extends Node2D
 
-class_name Tile
-
 # handles offset
 var hover_position
 var rest_position
@@ -15,7 +13,7 @@ func _ready():
 	rest_position = position
 	hover_position = Vector2(position.x, position.y - 128 * 0.10 ) 
 
-	tile_sprite.texture = load("res://Assets/Tiles/"+type+".png")
+	tile_sprite.texture = load("res://Assets/Tiles/terrain/"+type+".png")
 
 func _process(delta):
 	pass
