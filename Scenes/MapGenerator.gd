@@ -9,6 +9,7 @@ var world_size = 5
 # isometric boxes have 2:1 width:height ratio
 var tile_width = 256 
 var tile_height = 128 
+var y_off = 0.85 # didn't know how I came up with this
 
 onready var sorter = get_node("YSort")
 
@@ -22,8 +23,12 @@ func _process(delta):
 	track_mouse_loc()
 
 func draw_world(): 
-	for x in world_size:
-		for y in world_size:
+	for row in world_size:   # y
+		for col in world_size: # x
+			var x = col
+			var y = row * y_off
+			if row % 2 != 0:
+				x -= 0.5	
 			draw_tile(x, y)
 
 func draw_tile(x, y):
@@ -34,9 +39,11 @@ func draw_tile(x, y):
 	var j_hat = Vector2(-1 * tile_width / 2, 0.5 * tile_height)
 	# note tile position/pivot is in bottom left of sprite
 
-	var tile_position: Vector2 = (x * i_hat) + (y * j_hat)
+
+	var tile_position: Vector2 = (x * i_hat) + (y *  j_hat)
 
 	var tile = tile_scene.instance()
+	tile.type = "hex"
 	tile.position = tile_position
 
 	# YSort arranges draw order by y position. 
@@ -44,5 +51,3 @@ func draw_tile(x, y):
 
 func track_mouse_loc():
 	var mouse_pos = get_global_mouse_position()
-	print("x: ", mouse_pos.x)
-	print("y: ", mouse_pos.y, "\n")
