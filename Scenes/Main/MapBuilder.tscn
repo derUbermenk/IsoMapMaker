@@ -11,3 +11,129 @@
 [node name="HUD" type="Control" parent="UI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="MapTools" type="VBoxContainer" parent="UI/HUD"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+rect_min_size = Vector2( 300, 0 )
+custom_constants/separation = 200
+alignment = 1
+
+[node name="TerrainTransform" type="VBoxContainer" parent="UI/HUD/MapTools"]
+margin_left = 50.0
+margin_top = 91.0
+margin_right = 250.0
+margin_bottom = 391.0
+rect_min_size = Vector2( 200, 300 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/HUD/MapTools/TerrainTransform"]
+margin_top = 11.0
+margin_right = 200.0
+margin_bottom = 25.0
+text = "Terrain Transform Tools"
+align = 1
+valign = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/HUD/MapTools/TerrainTransform"]
+margin_top = 45.0
+margin_right = 200.0
+margin_bottom = 49.0
+
+[node name="GrassLand" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
+margin_top = 69.0
+margin_right = 200.0
+margin_bottom = 109.0
+rect_min_size = Vector2( 0, 40 )
+text = "GrassLand"
+
+[node name="Forest" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
+margin_top = 129.0
+margin_right = 200.0
+margin_bottom = 169.0
+rect_min_size = Vector2( 0, 40 )
+text = "Ocean"
+
+[node name="Mountain" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
+margin_top = 189.0
+margin_right = 200.0
+margin_bottom = 229.0
+rect_min_size = Vector2( 0, 40 )
+text = "Mountain"
+
+[node name="Ocean" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
+margin_top = 249.0
+margin_right = 200.0
+margin_bottom = 289.0
+rect_min_size = Vector2( 0, 40 )
+text = "GrassLand"
+
+[node name="DistrictBuilder" type="VBoxContainer" parent="UI/HUD/MapTools"]
+margin_left = 50.0
+margin_top = 591.0
+margin_right = 250.0
+margin_bottom = 989.0
+rect_min_size = Vector2( 200, 300 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Label" type="Label" parent="UI/HUD/MapTools/DistrictBuilder"]
+margin_right = 200.0
+margin_bottom = 14.0
+text = "District Builder"
+align = 1
+valign = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/HUD/MapTools/DistrictBuilder"]
+margin_top = 34.0
+margin_right = 200.0
+margin_bottom = 38.0
+
+[node name="RuralLow" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+margin_top = 58.0
+margin_right = 200.0
+margin_bottom = 98.0
+rect_min_size = Vector2( 0, 40 )
+text = "Rural Low"
+
+[node name="RuralMedium" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+margin_top = 118.0
+margin_right = 200.0
+margin_bottom = 158.0
+rect_min_size = Vector2( 0, 40 )
+text = "Rural Medium"
+
+[node name="UrbanMedium" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+margin_top = 178.0
+margin_right = 200.0
+margin_bottom = 218.0
+rect_min_size = Vector2( 0, 40 )
+text = "Urban Medium"
+
+[node name="UrbanHigh" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+margin_top = 238.0
+margin_right = 200.0
+margin_bottom = 278.0
+rect_min_size = Vector2( 0, 40 )
+text = "Urban High"
+
+[node name="Agricultural" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+margin_top = 298.0
+margin_right = 200.0
+margin_bottom = 338.0
+rect_min_size = Vector2( 0, 40 )
+text = "Agricultural"
+
+[node name="Industry" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+margin_top = 358.0
+margin_right = 200.0
+margin_bottom = 398.0
+rect_min_size = Vector2( 0, 40 )
+text = "Industrial"
