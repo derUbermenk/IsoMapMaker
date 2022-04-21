@@ -3,22 +3,43 @@ extends CanvasLayer
 export(ButtonGroup) var terrain_tools
 export(ButtonGroup) var district_builder_tools
 
-signal start_terraform(terrain_type)
-signal start_district_build(district_type)
-signal view_switch
+signal start_terraform(mode_index, terrain_type)
+signal start_district_build(mode_index, district_type)
+signal start_view(mode_index, type) 
 
 func _ready():
 	connect_tools(terrain_tools, "_on_terra_form_pressed")
 	connect_tools(district_builder_tools, "_on_district_builder_pressed")
 
+# updates the mode indicator in the bottom left
+# only for debugging
+func update_debug_mode_indicator(mode, type):
+	get_node("ModeDebugger/Mode").text = "Mode: " + mode
+	get_node("ModeDebugger/Type").text = "Type: " + type 
+
+func _unhandled_input(event):
+	if event is InputEventKey:
+		if event.pressed and event.scancode == KEY_ESCAPE:
+			_on_view_mode_pressed()
+
+# mode switches
+# build modes as defined in mapbuilder
+# 0 - View
+# 1 - TerraForm
+# 2 - DistrictBuilder
+
+func _on_view_mode_pressed():
+	unpress(terrain_tools)
+	unpress(district_builder_tools)
+	emit_signal("start_view", 0, "None")
+
 func _on_terra_form_pressed(terrain_type: String):
 	unpress(district_builder_tools)
-	emit_signal("start_terraform", terrain_type)
+	emit_signal("start_terraform", 1, terrain_type)
 
 func _on_district_builder_pressed(district_type: String):
 	unpress(terrain_tools)
-	emit_signal("start_district_build", district_type)
-
+	emit_signal("start_district_build", 2, district_type)
 
 # unpresses all buttons in the given button group
 func unpress(button_group: ButtonGroup):
