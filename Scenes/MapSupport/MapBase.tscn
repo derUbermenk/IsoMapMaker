@@ -9,5 +9,5 @@ __meta__ = {
 "_editor_description_": "Tiles or at least their client side representation are added as childs under the ysort node"
 }
 
-[node name="YSort" type="YSort" parent="."]
+[node name="Sorter" type="YSort" parent="."]
 position = Vector2( 832, 256 )
