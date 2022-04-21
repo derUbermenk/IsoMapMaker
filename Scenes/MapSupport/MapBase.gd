@@ -22,17 +22,15 @@ var map_data = [
 	[ocean, ocean, ocean, ocean, ocean ],
 ]
 
-onready var sorter = get_node("YSort")
+onready var tiles = get_node("Tiles")
 
 
 func _ready():
-	print(self)
 	draw_world()
 
 # add process for checking current mouse pointer location
 func _process(delta):
-	# for debugging
-	track_mouse_loc()
+	pass
 
 func draw_world(): 
 	for row in world_size:   # y
@@ -43,8 +41,8 @@ func draw_world():
 				x -= 0.5	
 			var tile = tile_scene.instance()
 			tile.init(x, y, map_data[row][col])
-			get_node("Sorter").add_child(tile)
-
+			tiles.add_child(tile)
 
 func track_mouse_loc():
 	var mouse_pos = get_global_mouse_position()
+	print(mouse_pos)
