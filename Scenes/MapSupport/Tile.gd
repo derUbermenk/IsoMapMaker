@@ -42,9 +42,6 @@ func init(x_, y_, terrain_type_):
 	_set_tile_positions(x_, y_)
 	_set_tile_type(terrain_type_)
 
-
-	terrain_type = terrain_type_
-
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
 func _set_tile_positions(x_, y_):
