@@ -34,17 +34,21 @@ onready var tile_area = get_node("TileArea")
 onready var tile_sprite = get_node("Sprite")
 
 func _ready():
-	tile_sprite.texture = terrain_texture 
+	_update_position(x, y)
+	_update_terrain(terrain_type)
+	pass
 	
 # tile setup code
 
-# setup the value of the sprite
+# initial setup
 	# I added the the underscore below the name to prevent overshadowing
-	# which in turn causes
+	# which in turn causes problem with placing the right value for the node
+	# defined variable
 func init(x_, y_, terrain_type_, map_):
+	x = x_
+	y = y_
 	map = map_
-	_update_position(x_, y_)
-	_update_terrain(terrain_type_)
+	terrain_type = terrain_type_
 
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
@@ -65,7 +69,12 @@ func _update_position(x_, y_):
 # set tile terrain type and image texture
 func _update_terrain(terrain_type_):
 	terrain_type = terrain_type_
-	terrain_texture = load("res://Assets/Tiles/terrain/" + terrain_type + ".png")
+	terrain_texture = _load_terrain_texture(terrain_type)
+
+	tile_sprite.texture = terrain_texture 
+
+func _load_terrain_texture(terrain_type_) -> Resource:
+	return load("res://Assets/Tiles/terrain/" + terrain_type_ + "/" + terrain_type_ + "_1" + ".png")
 
 # interaction code
 
@@ -92,8 +101,7 @@ func _on_TileArea_input_event(viewport:Node, event:InputEvent, shape_idx:int):
 
 	if (event is InputEventMouseButton && event.is_pressed() && event.button_index == 1): 
 		if map.map_builder.mode == "TerraForm":
-			# _set_tile_type(map.map_builder.mode_type)
-			pass
+			_update_terrain(map.map_builder.mode_type)
 		else: 
 			pass
 	else: 
