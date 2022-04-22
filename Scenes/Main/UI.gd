@@ -13,9 +13,14 @@ func _ready():
 
 # updates the mode indicator in the bottom left
 # only for debugging
-func update_debug_mode_indicator(mode, type):
+func update_debug_mode_indicator(mode, type, painting_indicator):
+	var is_painting = 'false'
+	if painting_indicator:
+		is_painting = 'true' 
+
 	get_node("ModeDebugger/Mode").text = "Mode: " + mode
 	get_node("ModeDebugger/Type").text = "Type: " + type 
+	get_node("ModeDebugger/PaintingIndicator").text = "Painting: " + is_painting 
 
 func _unhandled_input(event):
 	if event is InputEventKey:

@@ -194,4 +194,15 @@ margin_right = 196.0
 margin_bottom = 16.0
 text = "Type: "
 
+[node name="VSeparator2" type="VSeparator" parent="UI/ModeDebugger"]
+margin_left = 236.0
+margin_right = 240.0
+margin_bottom = 19.0
+
+[node name="PaintingIndicator" type="Label" parent="UI/ModeDebugger"]
+margin_left = 280.0
+margin_top = 2.0
+margin_right = 280.0
+margin_bottom = 16.0
+
 [node name="Map" parent="." instance=ExtResource( 1 )]

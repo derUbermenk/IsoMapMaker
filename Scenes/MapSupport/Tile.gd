@@ -85,7 +85,7 @@ func _load_texture(folder, type) -> Resource:
 # interaction code
 
 func _process(delta):
-	handle_tile_click()
+	pass
 
 func handle_tile_click():
 	if Input.is_mouse_button_pressed(1) && map.hovered_tile != null:
@@ -98,8 +98,11 @@ func handle_tile_click():
 				pass
 
 func build_district():
-	if is_valid_district_location:
+	print(is_valid_district_location)
+	if is_valid_district_location == true:
 		map.hovered_tile.update_terrain(map.map_builder.mode_type)
+	else:
+		pass
 
 func validate_build_location():
 	# set initial value as false. 
@@ -116,20 +119,36 @@ func validate_build_location():
 func terraform():
 	map.hovered_tile.update_terrain(map.map_builder.mode_type)
 
-func _on_TileArea_mouse_exited():
-	map.hovered_tile = null 
+func _input(event):
+	if event is InputEventMouseButton: 
+		if event.button_index == 1:
+			map.is_painting = event.is_pressed()
+			map.emit_signal("paint_mode_switch")
 
+func _on_TileArea_mouse_exited():
 	if map.map_builder.mode == "View":
 		position = rest_position
 	else:
 		modulate = Color("ffffff")
+
+	map.hovered_tile = null 
 
 func _on_TileArea_mouse_entered():
 	map.hovered_tile = self
 
 	if map.map_builder.mode == "TerraForm":
 		modulate = terraForm_hoverColor
+		if map.is_painting: update_terrain(map.map_builder.mode_type)
 	elif map.map_builder.mode == "DistrictBuilder":
 		validate_build_location()
 	else:
 		position = hover_position
+
+func _on_TileArea_input_event(viewport:Node, event:InputEvent, shape_idx:int):
+	if (event is InputEventMouseButton && (event.is_pressed()) && event.button_index == 1): 
+		if map.map_builder.mode == "TerraForm":
+			update_terrain(map.map_builder.mode_type)
+		else: 
+			pass
+	else:
+		pass

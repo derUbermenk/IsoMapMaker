@@ -1,5 +1,7 @@
 extends Node2D
 
+signal paint_mode_switch
+
 var tile_scene = load("res://Scenes/MapSupport/Tile.tscn")
 
 # represents number of tiles
@@ -20,6 +22,7 @@ var map_data = [
 ]
 
 var hovered_tile
+var is_painting = false
 
 onready var tiles = get_node("Tiles")
 onready var map_builder = get_parent() 
@@ -43,7 +46,6 @@ func draw_map():
 				# on the map(self)
 			tile.init(x, y, map_data[row][col], self)
 			tiles.add_child(tile)
-
 
 # reset the color of the hovered tile if there is any
 func reset_hover_hightlight():
