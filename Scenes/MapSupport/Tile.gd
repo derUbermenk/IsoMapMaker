@@ -28,6 +28,7 @@ var x
 var y
 var terrain_type
 var terrain_texture
+var map
 
 onready var tile_area = get_node("TileArea") 
 onready var tile_sprite = get_node("Sprite")
@@ -38,7 +39,10 @@ func _ready():
 # tile setup code
 
 # setup the value of the sprite
-func init(x_, y_, terrain_type_):
+	# I added the the underscore below the name to prevent overshadowing
+	# which in turn causes
+func init(x_, y_, terrain_type_, map_):
+	map = map_
 	_set_tile_positions(x_, y_)
 	_set_tile_type(terrain_type_)
 
