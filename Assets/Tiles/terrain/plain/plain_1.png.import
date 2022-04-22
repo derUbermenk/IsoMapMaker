@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ocean.png-16ebc5da266fe4b67f6b7dc7397d8846.stex"
+path="res://.import/plain_1.png-be117c805598ed1d7e37e425c4784737.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Tiles/terrain/ocean.png"
-dest_files=[ "res://.import/ocean.png-16ebc5da266fe4b67f6b7dc7397d8846.stex" ]
+source_file="res://Assets/Tiles/terrain/plain/plain_1.png"
+dest_files=[ "res://.import/plain_1.png-be117c805598ed1d7e37e425c4784737.stex" ]
 
 [params]
 
