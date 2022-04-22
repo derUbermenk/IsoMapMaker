@@ -28,6 +28,7 @@ var x
 var y
 var terrain_type
 var terrain_texture
+var valid_district_location
 var map
 
 var terraForm_hoverColor =  Color("f1fac3")
@@ -98,6 +99,19 @@ func handle_tile_click():
 func build_district():
 	pass
 
+func validate_build_location():
+	# set initial value as false. 
+		# This is to avoid conflicts in future validations where the value
+		# is that of the former validation
+	valid_district_location = false
+
+	if terrain_type in ['plain', 'forest']:
+		valid_district_location = true
+		modulate = districtBuilder_validColor 
+	else:
+		modulate = districtBuilder_invalidColor
+
+
 func terraform():
 	if map.hovered_tile != null: 
 		map.hovered_tile.update_terrain(map.map_builder.mode_type)
@@ -118,6 +132,6 @@ func _on_TileArea_mouse_entered():
 	if map.map_builder.mode == "TerraForm":
 		modulate = terraForm_hoverColor
 	elif map.map_builder.mode == "DistrictBuilder":
-		pass
+		validate_build_location()
 	else:
 		position = hover_position
