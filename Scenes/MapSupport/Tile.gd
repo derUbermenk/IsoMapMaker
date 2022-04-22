@@ -31,11 +31,11 @@ var terrain_texture
 var map
 
 onready var tile_area = get_node("TileArea") 
-onready var tile_sprite = get_node("Sprite")
+onready var tile_sprite = get_node("Terrain")
 
 func _ready():
 	_update_position(x, y)
-	_update_terrain(terrain_type)
+	update_terrain(terrain_type)
 	pass
 	
 # tile setup code
@@ -67,25 +67,45 @@ func _update_position(x_, y_):
 	hover_position = Vector2(position.x, position.y - 128 * 0.10)
 
 # set tile terrain type and image texture
-func _update_terrain(terrain_type_):
+func update_terrain(terrain_type_):
 	terrain_type = terrain_type_
-	terrain_texture = _load_terrain_texture(terrain_type)
+	terrain_texture = _load_texture("terrain", terrain_type)
 
 	tile_sprite.texture = terrain_texture 
 
-func _load_terrain_texture(terrain_type_) -> Resource:
-	return load("res://Assets/Tiles/terrain/" + terrain_type_ + "/" + terrain_type_ + "_1" + ".png")
+func _load_texture(folder, type) -> Resource:
+	return load("res://Assets/Tiles/" + folder + "/" + type + "/" + type + "_1" + ".png")
 
 # interaction code
 
 func _process(delta):
+	handle_tile_click()
+
+func handle_tile_click():
+	if Input.is_mouse_button_pressed(1):
+		match map.map_builder.mode:
+			"TerraForm":
+				terraform()
+			"DistrictBuilder":
+				build_district()
+			"View":
+				pass
+
+func build_district():
 	pass
+
+func terraform():
+	if map.hovered_tile != null: 
+		map.hovered_tile.update_terrain(map.map_builder.mode_type)
+	else:
+		pass
 
 func _on_TileArea_mouse_exited():
 	map.hovered_tile = null 
 
 	if map.map_builder.mode == "TerraForm":
 		modulate = Color("ffffff")
+
 	else:
 		position = rest_position
 
@@ -96,13 +116,3 @@ func _on_TileArea_mouse_entered():
 		modulate = Color("f1fac3")
 	else:
 		position = hover_position
-
-func _on_TileArea_input_event(viewport:Node, event:InputEvent, shape_idx:int):
-
-	if (event is InputEventMouseButton && event.is_pressed() && event.button_index == 1): 
-		if map.map_builder.mode == "TerraForm":
-			_update_terrain(map.map_builder.mode_type)
-		else: 
-			pass
-	else: 
-		pass
