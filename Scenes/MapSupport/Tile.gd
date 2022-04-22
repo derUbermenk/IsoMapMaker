@@ -88,7 +88,7 @@ func _process(delta):
 	handle_tile_click()
 
 func handle_tile_click():
-	if Input.is_mouse_button_pressed(1):
+	if Input.is_mouse_button_pressed(1) && map.hovered_tile != null:
 		match map.map_builder.mode:
 			"TerraForm":
 				terraform()
@@ -98,7 +98,8 @@ func handle_tile_click():
 				pass
 
 func build_district():
-	pass
+	if is_valid_district_location:
+		map.hovered_tile.update_terrain(map.map_builder.mode_type)
 
 func validate_build_location():
 	# set initial value as false. 
@@ -113,10 +114,7 @@ func validate_build_location():
 		modulate = districtBuilder_validColor 
 
 func terraform():
-	if map.hovered_tile != null: 
-		map.hovered_tile.update_terrain(map.map_builder.mode_type)
-	else:
-		pass
+	map.hovered_tile.update_terrain(map.map_builder.mode_type)
 
 func _on_TileArea_mouse_exited():
 	map.hovered_tile = null 

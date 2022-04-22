@@ -121,7 +121,7 @@ toggle_mode = true
 group = ExtResource( 3 )
 text = "Rural Low"
 
-[node name="RuralMedium" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+[node name="rural_medium" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
 margin_top = 118.0
 margin_right = 200.0
 margin_bottom = 158.0
