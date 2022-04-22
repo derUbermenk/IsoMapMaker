@@ -28,7 +28,8 @@ var x
 var y
 var terrain_type
 var terrain_texture
-var valid_district_location
+var is_valid_district_location
+var invalid_district_locations = ['ocean', 'mountain']
 var map
 
 var terraForm_hoverColor =  Color("f1fac3")
@@ -103,14 +104,13 @@ func validate_build_location():
 	# set initial value as false. 
 		# This is to avoid conflicts in future validations where the value
 		# is that of the former validation
-	valid_district_location = false
+	is_valid_district_location = false
 
-	if terrain_type in ['plain', 'forest']:
-		valid_district_location = true
-		modulate = districtBuilder_validColor 
-	else:
+	if terrain_type in invalid_district_locations:
 		modulate = districtBuilder_invalidColor
-
+	else:
+		is_valid_district_location = true
+		modulate = districtBuilder_validColor 
 
 func terraform():
 	if map.hovered_tile != null: 
