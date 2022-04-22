@@ -53,16 +53,16 @@ margin_top = 45.0
 margin_right = 200.0
 margin_bottom = 49.0
 
-[node name="GrassLand" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
+[node name="plain" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
 margin_top = 69.0
 margin_right = 200.0
 margin_bottom = 109.0
 rect_min_size = Vector2( 0, 40 )
 toggle_mode = true
 group = ExtResource( 2 )
-text = "GrassLand"
+text = "Plain"
 
-[node name="Forest" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
+[node name="ocean" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
 margin_top = 129.0
 margin_right = 200.0
 margin_bottom = 169.0
@@ -71,7 +71,7 @@ toggle_mode = true
 group = ExtResource( 2 )
 text = "Ocean"
 
-[node name="Mountain" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
+[node name="mountain" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
 margin_top = 189.0
 margin_right = 200.0
 margin_bottom = 229.0
@@ -80,14 +80,14 @@ toggle_mode = true
 group = ExtResource( 2 )
 text = "Mountain"
 
-[node name="Ocean" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
+[node name="forest" type="Button" parent="UI/HUD/MapTools/TerrainTransform"]
 margin_top = 249.0
 margin_right = 200.0
 margin_bottom = 289.0
 rect_min_size = Vector2( 0, 40 )
 toggle_mode = true
 group = ExtResource( 2 )
-text = "GrassLand"
+text = "Forest"
 
 [node name="DistrictBuilder" type="VBoxContainer" parent="UI/HUD/MapTools"]
 margin_left = 50.0

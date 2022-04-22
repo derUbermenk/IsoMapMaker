@@ -7,8 +7,8 @@ var world_size = 5
 
 # just delete this later only for tests
 var ocean = "ocean"
+var forest = "forest"
 var plain = "plain"
-var land = "land"
 var asphalt = "asphalt"
 
 var map_data = [
