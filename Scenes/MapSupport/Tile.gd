@@ -28,7 +28,7 @@ var x
 var y
 var terrain_type
 var terrain_texture
-var is_valid_district_location
+var valid_build_location: bool
 var invalid_district_locations = ['ocean', 'mountain']
 var map
 
@@ -41,7 +41,10 @@ onready var tile_sprite = get_node("Terrain")
 
 func _ready():
 	_update_position(x, y)
-	update_terrain(terrain_type)
+	_update_terrain(terrain_type)
+	pass
+
+func _process(delta):
 	pass
 	
 # tile setup code
@@ -55,6 +58,7 @@ func init(x_, y_, terrain_type_, map_):
 	y = y_
 	map = map_
 	terrain_type = terrain_type_
+
 
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
@@ -73,7 +77,7 @@ func _update_position(x_, y_):
 	hover_position = Vector2(position.x, position.y - 128 * 0.10)
 
 # set tile terrain type and image texture
-func update_terrain(terrain_type_):
+func _update_terrain(terrain_type_):
 	terrain_type = terrain_type_
 	terrain_texture = _load_texture("terrain", terrain_type)
 
@@ -82,28 +86,25 @@ func update_terrain(terrain_type_):
 func _load_texture(folder, type) -> Resource:
 	return load("res://Assets/Tiles/" + folder + "/" + type + "/" + type + "_1" + ".png")
 
-# interaction code
-
-func _process(delta):
-	pass
-
-func build_district():
-	print(is_valid_district_location)
-	if is_valid_district_location == true:
-		map.hovered_tile.update_terrain(map.map_builder.mode_type)
+func _build_district():
+	if valid_build_location:
+		_update_terrain(map.map_builder.mode_type)
 	else:
 		pass
 
+# checks if the hovered build location is valid
+# modulates the tile depending on validity and returns
+# the validity
 func validate_build_location():
 	# set initial value as false. 
 		# This is to avoid conflicts in future validations where the value
 		# is that of the former validation
-	is_valid_district_location = false
+	valid_build_location = false
 
 	if terrain_type in invalid_district_locations:
 		modulate = districtBuilder_invalidColor
 	else:
-		is_valid_district_location = true
+		valid_build_location = true
 		modulate = districtBuilder_validColor 
 
 func terraform():
@@ -120,9 +121,10 @@ func _on_TileArea_mouse_entered():
 
 	if map.map_builder.mode == "TerraForm":
 		modulate = terraForm_hoverColor
-		if map.paint_mode: update_terrain(map.map_builder.mode_type)
+		if map.paint_mode: _update_terrain(map.map_builder.mode_type)
 	elif map.map_builder.mode == "DistrictBuilder":
 		validate_build_location()
+		if map.paint_mode: _build_district()
 	else:
 		position = hover_position
 
@@ -137,8 +139,8 @@ func _on_TileArea_mouse_exited():
 func _on_TileArea_input_event(viewport:Node, event:InputEvent, shape_idx:int):
 	if (event is InputEventMouseButton && (event.is_pressed()) && event.button_index == 1): 
 		if map.map_builder.mode == "TerraForm":
-			update_terrain(map.map_builder.mode_type)
-		else: 
-			pass
+			_update_terrain(map.map_builder.mode_type)
+		elif map.map_builder.mode == "DistrictBuilder":
+			_build_district()
 	else:
 		pass
