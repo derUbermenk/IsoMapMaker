@@ -30,6 +30,10 @@ var terrain_type
 var terrain_texture
 var map
 
+var terraForm_hoverColor =  Color("f1fac3")
+var districtBuilder_validColor = Color("8dd983")
+var districtBuilder_invalidColor = Color("ffb0b0")
+
 onready var tile_area = get_node("TileArea") 
 onready var tile_sprite = get_node("Terrain")
 
@@ -103,16 +107,17 @@ func terraform():
 func _on_TileArea_mouse_exited():
 	map.hovered_tile = null 
 
-	if map.map_builder.mode == "TerraForm":
-		modulate = Color("ffffff")
-
-	else:
+	if map.map_builder.mode == "View":
 		position = rest_position
+	else:
+		modulate = Color("ffffff")
 
 func _on_TileArea_mouse_entered():
 	map.hovered_tile = self
 
 	if map.map_builder.mode == "TerraForm":
-		modulate = Color("f1fac3")
+		modulate = terraForm_hoverColor
+	elif map.map_builder.mode == "DistrictBuilder":
+		pass
 	else:
 		position = hover_position
