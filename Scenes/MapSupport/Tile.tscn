@@ -7,12 +7,13 @@
 script = ExtResource( 2 )
 
 [node name="TileArea" type="Area2D" parent="."]
+modulate = Color( 0.333333, 0.0627451, 0.0627451, 1 )
 position = Vector2( 153, -53 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="TileArea"]
 polygon = PoolVector2Array( 0, 0, 65, -31, 43, -76, -51, -88, -116, -55, -94, -11 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Terrain" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 offset = Vector2( 128, -256 )
 

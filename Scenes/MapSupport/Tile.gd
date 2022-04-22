@@ -28,26 +28,36 @@ var x
 var y
 var terrain_type
 var terrain_texture
+var valid_district_location
+var map
+
+var terraForm_hoverColor =  Color("f1fac3")
+var districtBuilder_validColor = Color("8dd983")
+var districtBuilder_invalidColor = Color("ffb0b0")
 
 onready var tile_area = get_node("TileArea") 
-onready var tile_sprite = get_node("Sprite")
+onready var tile_sprite = get_node("Terrain")
 
 func _ready():
-	tile_sprite.texture = terrain_texture 
+	_update_position(x, y)
+	update_terrain(terrain_type)
+	pass
 	
 # tile setup code
 
-# setup the value of the sprite
-func init(x_, y_, terrain_type_):
-	_set_tile_positions(x_, y_)
-	_set_tile_type(terrain_type_)
-
-
+# initial setup
+	# I added the the underscore below the name to prevent overshadowing
+	# which in turn causes problem with placing the right value for the node
+	# defined variable
+func init(x_, y_, terrain_type_, map_):
+	x = x_
+	y = y_
+	map = map_
 	terrain_type = terrain_type_
 
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
-func _set_tile_positions(x_, y_):
+func _update_position(x_, y_):
 	# resize i_hat and j_hat vectors accoriding to tile width and height	
 		# divide tile_width by 2 since original takes more than 2 reference tiles
 		# ref tile is 1:1
@@ -62,21 +72,66 @@ func _set_tile_positions(x_, y_):
 	hover_position = Vector2(position.x, position.y - 128 * 0.10)
 
 # set tile terrain type and image texture
-func _set_tile_type(terrain_type_):
+func update_terrain(terrain_type_):
 	terrain_type = terrain_type_
-	terrain_texture = load("res://Assets/Tiles/terrain/" + terrain_type + ".png")
+	terrain_texture = _load_texture("terrain", terrain_type)
+
+	tile_sprite.texture = terrain_texture 
+
+func _load_texture(folder, type) -> Resource:
+	return load("res://Assets/Tiles/" + folder + "/" + type + "/" + type + "_1" + ".png")
 
 # interaction code
 
 func _process(delta):
+	handle_tile_click()
+
+func handle_tile_click():
+	if Input.is_mouse_button_pressed(1):
+		match map.map_builder.mode:
+			"TerraForm":
+				terraform()
+			"DistrictBuilder":
+				build_district()
+			"View":
+				pass
+
+func build_district():
 	pass
 
+func validate_build_location():
+	# set initial value as false. 
+		# This is to avoid conflicts in future validations where the value
+		# is that of the former validation
+	valid_district_location = false
+
+	if terrain_type in ['plain', 'forest']:
+		valid_district_location = true
+		modulate = districtBuilder_validColor 
+	else:
+		modulate = districtBuilder_invalidColor
+
+
+func terraform():
+	if map.hovered_tile != null: 
+		map.hovered_tile.update_terrain(map.map_builder.mode_type)
+	else:
+		pass
+
 func _on_TileArea_mouse_exited():
-	position = rest_position
+	map.hovered_tile = null 
+
+	if map.map_builder.mode == "View":
+		position = rest_position
+	else:
+		modulate = Color("ffffff")
 
 func _on_TileArea_mouse_entered():
-	position = hover_position
+	map.hovered_tile = self
 
-
-
-
+	if map.map_builder.mode == "TerraForm":
+		modulate = terraForm_hoverColor
+	elif map.map_builder.mode == "DistrictBuilder":
+		validate_build_location()
+	else:
+		position = hover_position
