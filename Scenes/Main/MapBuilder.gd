@@ -5,6 +5,9 @@ var mode = build_modes[0]
 var mode_type = "None"
 
 onready var ui = get_node("UI")
+onready var map = get_node("Map")
+
+signal mode_switched(mode, mode_type)
 
 func _ready():
 	ui.connect("start_terraform", self, "_on_mode_switch")
@@ -18,7 +21,4 @@ func _on_mode_switch(mode_index, type):
 	mode_type = type
 
 	ui.update_debug_mode_indicator(mode, type)
-
-
-
-
+	map.reset_hover_hightlight()

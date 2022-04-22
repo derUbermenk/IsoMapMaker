@@ -23,11 +23,10 @@ func _unhandled_input(event):
 			_on_view_mode_pressed()
 
 # mode switches
-# build modes as defined in mapbuilder
-# 0 - View
-# 1 - TerraForm
-# 2 - DistrictBuilder
-
+	# build modes as defined in mapbuilder
+	# 0 - View
+	# 1 - TerraForm
+	# 2 - DistrictBuilder
 func _on_view_mode_pressed():
 	unpress(terrain_tools)
 	unpress(district_builder_tools)

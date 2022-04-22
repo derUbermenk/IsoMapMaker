@@ -43,12 +43,12 @@ func _ready():
 	# which in turn causes
 func init(x_, y_, terrain_type_, map_):
 	map = map_
-	_set_tile_positions(x_, y_)
-	_set_tile_type(terrain_type_)
+	_update_position(x_, y_)
+	_update_terrain(terrain_type_)
 
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
-func _set_tile_positions(x_, y_):
+func _update_position(x_, y_):
 	# resize i_hat and j_hat vectors accoriding to tile width and height	
 		# divide tile_width by 2 since original takes more than 2 reference tiles
 		# ref tile is 1:1
@@ -63,7 +63,7 @@ func _set_tile_positions(x_, y_):
 	hover_position = Vector2(position.x, position.y - 128 * 0.10)
 
 # set tile terrain type and image texture
-func _set_tile_type(terrain_type_):
+func _update_terrain(terrain_type_):
 	terrain_type = terrain_type_
 	terrain_texture = load("res://Assets/Tiles/terrain/" + terrain_type + ".png")
 
@@ -73,11 +73,28 @@ func _process(delta):
 	pass
 
 func _on_TileArea_mouse_exited():
-	position = rest_position
+	map.hovered_tile = null 
+
+	if map.map_builder.mode == "TerraForm":
+		modulate = Color("ffffff")
+	else:
+		position = rest_position
 
 func _on_TileArea_mouse_entered():
-	position = hover_position
+	map.hovered_tile = self
 
+	if map.map_builder.mode == "TerraForm":
+		modulate = Color("f1fac3")
+	else:
+		position = hover_position
 
+func _on_TileArea_input_event(viewport:Node, event:InputEvent, shape_idx:int):
 
-
+	if (event is InputEventMouseButton && event.is_pressed() && event.button_index == 1): 
+		if map.map_builder.mode == "TerraForm":
+			# _set_tile_type(map.map_builder.mode_type)
+			pass
+		else: 
+			pass
+	else: 
+		pass

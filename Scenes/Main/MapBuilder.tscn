@@ -194,4 +194,4 @@ margin_right = 196.0
 margin_bottom = 16.0
 text = "Type: "
 
-[node name="World" parent="." instance=ExtResource( 1 )]
+[node name="Map" parent="." instance=ExtResource( 1 )]
