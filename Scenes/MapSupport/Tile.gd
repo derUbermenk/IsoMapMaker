@@ -87,16 +87,6 @@ func _load_texture(folder, type) -> Resource:
 func _process(delta):
 	pass
 
-func handle_tile_click():
-	if Input.is_mouse_button_pressed(1) && map.hovered_tile != null:
-		match map.map_builder.mode:
-			"TerraForm":
-				terraform()
-			"DistrictBuilder":
-				build_district()
-			"View":
-				pass
-
 func build_district():
 	print(is_valid_district_location)
 	if is_valid_district_location == true:
@@ -122,8 +112,19 @@ func terraform():
 func _input(event):
 	if event is InputEventMouseButton: 
 		if event.button_index == 1:
-			map.is_painting = event.is_pressed()
+			map.paint_mode = event.is_pressed()
 			map.emit_signal("paint_mode_switch")
+			
+func _on_TileArea_mouse_entered():
+	map.hovered_tile = self
+
+	if map.map_builder.mode == "TerraForm":
+		modulate = terraForm_hoverColor
+		if map.paint_mode: update_terrain(map.map_builder.mode_type)
+	elif map.map_builder.mode == "DistrictBuilder":
+		validate_build_location()
+	else:
+		position = hover_position
 
 func _on_TileArea_mouse_exited():
 	if map.map_builder.mode == "View":
@@ -132,17 +133,6 @@ func _on_TileArea_mouse_exited():
 		modulate = Color("ffffff")
 
 	map.hovered_tile = null 
-
-func _on_TileArea_mouse_entered():
-	map.hovered_tile = self
-
-	if map.map_builder.mode == "TerraForm":
-		modulate = terraForm_hoverColor
-		if map.is_painting: update_terrain(map.map_builder.mode_type)
-	elif map.map_builder.mode == "DistrictBuilder":
-		validate_build_location()
-	else:
-		position = hover_position
 
 func _on_TileArea_input_event(viewport:Node, event:InputEvent, shape_idx:int):
 	if (event is InputEventMouseButton && (event.is_pressed()) && event.button_index == 1): 

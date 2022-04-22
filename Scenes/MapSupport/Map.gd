@@ -22,7 +22,7 @@ var map_data = [
 ]
 
 var hovered_tile
-var is_painting = false
+var paint_mode = false
 
 onready var tiles = get_node("Tiles")
 onready var map_builder = get_parent() 

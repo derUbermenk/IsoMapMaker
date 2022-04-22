@@ -13,14 +13,14 @@ func _ready():
 	ui.connect("start_view", self, "_on_mode_switch")
 	map.connect("paint_mode_switch", self, "_on_paint_mode_switch")
 
-	ui.update_debug_mode_indicator(mode, mode_type, map.is_painting)
+	ui.update_debug_mode_indicator(mode, mode_type, map.paint_mode)
 
 func _on_mode_switch(mode_index, type):
 	mode = build_modes[mode_index] 
 	mode_type = type
 
-	ui.update_debug_mode_indicator(mode, type, map.is_painting)
+	ui.update_debug_mode_indicator(mode, type, map.paint_mode)
 	map.reset_hover_hightlight()
 
 func _on_paint_mode_switch():
-	ui.update_debug_mode_indicator(mode, mode_type, map.is_painting)
+	ui.update_debug_mode_indicator(mode, mode_type, map.paint_mode)
