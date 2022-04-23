@@ -112,7 +112,7 @@ margin_top = 34.0
 margin_right = 200.0
 margin_bottom = 38.0
 
-[node name="RuralLow" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+[node name="rural_low" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
 margin_top = 58.0
 margin_right = 200.0
 margin_bottom = 98.0
@@ -121,7 +121,7 @@ toggle_mode = true
 group = ExtResource( 3 )
 text = "Rural Low"
 
-[node name="RuralMedium" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+[node name="rural_medium" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
 margin_top = 118.0
 margin_right = 200.0
 margin_bottom = 158.0
@@ -130,7 +130,7 @@ toggle_mode = true
 group = ExtResource( 3 )
 text = "Rural Medium"
 
-[node name="UrbanMedium" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+[node name="urban_medium" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
 margin_top = 178.0
 margin_right = 200.0
 margin_bottom = 218.0
@@ -139,7 +139,7 @@ toggle_mode = true
 group = ExtResource( 3 )
 text = "Urban Medium"
 
-[node name="UrbanHigh" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+[node name="urban_high" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
 margin_top = 238.0
 margin_right = 200.0
 margin_bottom = 278.0
@@ -148,7 +148,7 @@ toggle_mode = true
 group = ExtResource( 3 )
 text = "Urban High"
 
-[node name="Agricultural" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+[node name="agricultural" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
 margin_top = 298.0
 margin_right = 200.0
 margin_bottom = 338.0
@@ -157,7 +157,7 @@ toggle_mode = true
 group = ExtResource( 3 )
 text = "Agricultural"
 
-[node name="Industry" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
+[node name="industrial" type="Button" parent="UI/HUD/MapTools/DistrictBuilder"]
 margin_top = 358.0
 margin_right = 200.0
 margin_bottom = 398.0
@@ -193,5 +193,16 @@ margin_top = 2.0
 margin_right = 196.0
 margin_bottom = 16.0
 text = "Type: "
+
+[node name="VSeparator2" type="VSeparator" parent="UI/ModeDebugger"]
+margin_left = 236.0
+margin_right = 240.0
+margin_bottom = 19.0
+
+[node name="PaintingIndicator" type="Label" parent="UI/ModeDebugger"]
+margin_left = 280.0
+margin_top = 2.0
+margin_right = 280.0
+margin_bottom = 16.0
 
 [node name="Map" parent="." instance=ExtResource( 1 )]

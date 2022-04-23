@@ -17,5 +17,6 @@ polygon = PoolVector2Array( 0, 0, 65, -31, 43, -76, -51, -88, -116, -55, -94, -1
 texture = ExtResource( 1 )
 offset = Vector2( 128, -256 )
 
+[connection signal="input_event" from="TileArea" to="." method="_on_TileArea_input_event"]
 [connection signal="mouse_entered" from="TileArea" to="." method="_on_TileArea_mouse_entered"]
 [connection signal="mouse_exited" from="TileArea" to="." method="_on_TileArea_mouse_exited"]

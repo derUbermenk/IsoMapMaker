@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Iso Map Maker"
-run/main_scene="res://Scenes/MapSupport/Map.tscn"
+run/main_scene="res://Scenes/Main/MapBuilder.tscn"
 config/icon="res://icon.png"
 
 [display]
