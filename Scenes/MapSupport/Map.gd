@@ -1,6 +1,7 @@
 extends Node2D
 
 signal paint_mode_switch
+signal update_hovered_tile_details
 
 var tile_scene = load("res://Scenes/MapSupport/Tile.tscn")
 
@@ -45,18 +46,19 @@ func draw_map():
 		for col in world_size: # x
 			row_initial_tile_cube_coord += Vector3(1, -1, 0)
 			var cartesian_coordinate = Vector2(col, row)
-			if row % 2 != 0: cartesian_coord.x -= 0.5	
+			var cube_coord = row_initial_tile_cube_coord
+			if row % 2 != 0: cartesian_coordinate.x -= 0.5	
 
 			var tile = tile_scene.instance()
 			# init the tile with the given x y positions (still gets transformed)
 				# on the map(self)
-			tile.init(cartesian_coord, row_initial_tile_cube_coord, map_data[row][col], self)
+			tile.init(cartesian_coordinate, cube_coord, map_data[row][col], self)
 			tiles.add_child(tile)
 		
 		# compute q r s values for next row
 		if row == 0 or row % 2 == 0: last_cube_coord.x -= 1 # q
 		last_cube_coord.y += 1                              # r
-		if row % 2 != 0: s -= 1
+		if row % 2 != 0: last_cube_coord.z -= 1
 
 
 # reset the color of the hovered tile if there is any

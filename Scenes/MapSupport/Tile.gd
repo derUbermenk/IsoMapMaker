@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Tile
+
 # for vertical offset effect on mouse hover
 var hover_position
 var rest_position
@@ -26,6 +28,7 @@ var y_off = 0.8726 # didn't know how I came up with this
 var map: Node2D											 # map where the tile belongs 
 var x: float 												 # non transformed x position assuming 1 as base height unit
 var y: float												 # non transformed y position assuming 1 as base height unit
+var cube_coord: Vector3              # the cube coordinates of this tile x=q; y=r; z=s
 var terrain_type: String             # 
 var terrain_texture: Resource  			 # terrain texture associated with the terrain type
 
@@ -52,11 +55,14 @@ func _process(delta):
 	# I added the the underscore below the name to prevent overshadowing
 	# which in turn causes problem with placing the right value for the node
 	# defined variable
-func init(x_, y_, terrain_type_, map_):
-	x = x_
-	y = y_
+	# cube_coord q == x; r == y; s == z
+func init(cartesian_coord: Vector2, cube_coord_: Vector3, terrain_type_, map_):
+	# temporary just want to see if my code works
+	x = cartesian_coord.x 
+	y = cartesian_coord.y
 	map = map_
 	terrain_type = terrain_type_
+	cube_coord = cube_coord_
 
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
@@ -124,6 +130,8 @@ func _on_TileArea_mouse_entered():
 			_hover_on_DistrictBuilder()
 		"View":
 			position = hover_position
+	
+	map.emit_signal("update_hovered_tile_details")
 
 # hover response when map builder mode is set to TerraForm
 func _hover_on_TerraForm():
