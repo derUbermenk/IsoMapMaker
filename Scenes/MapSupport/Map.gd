@@ -44,7 +44,6 @@ func draw_map():
 		var row_initial_tile_cube_coord = Vector3(last_cube_coord.x, last_cube_coord.y, last_cube_coord.z)
 
 		for col in world_size: # x
-			row_initial_tile_cube_coord += Vector3(1, -1, 0)
 			var cartesian_coordinate = Vector2(col, row)
 			var cube_coord = row_initial_tile_cube_coord
 			if row % 2 != 0: cartesian_coordinate.x -= 0.5	
@@ -54,6 +53,7 @@ func draw_map():
 				# on the map(self)
 			tile.init(cartesian_coordinate, cube_coord, map_data[row][col], self)
 			tiles.add_child(tile)
+			row_initial_tile_cube_coord += Vector3(1, 0, -1)
 		
 		# compute q r s values for next row
 		if row == 0 or row % 2 == 0: last_cube_coord.x -= 1 # q
