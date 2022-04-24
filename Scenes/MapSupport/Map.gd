@@ -36,30 +36,39 @@ func _process(delta):
 	pass
 
 func draw_map(): 
-	var last_cube_coord = Vector3() # instantiate a cube coord x == q, y == r, z == s
+	var last_row_cube_coord = Vector3() # instantiate a cube coord x == q, y == r, z == s
 
 	for row in world_size:   # y
 
-		# the cube coord of the first column in this row
-		var row_initial_tile_cube_coord = Vector3(last_cube_coord.x, last_cube_coord.y, last_cube_coord.z)
+		# the cube coord of the first tile in this row
+		var initial_tile_cube_coord= Vector3(last_row_cube_coord.x, last_row_cube_coord.y, last_row_cube_coord.z)
 
 		for col in world_size: # x
-			var cartesian_coordinate = Vector2(col, row)
-			var cube_coord = row_initial_tile_cube_coord
-			if row % 2 != 0: cartesian_coordinate.x -= 0.5	
-
-			var tile = tile_scene.instance()
-			# init the tile with the given x y positions (still gets transformed)
-				# on the map(self)
-			tile.init(cartesian_coordinate, cube_coord, map_data[row][col], self)
-			tiles.add_child(tile)
-			row_initial_tile_cube_coord += Vector3(1, 0, -1)
+			instance_tile(col, row, initial_tile_cube_coord)
+			initial_tile_cube_coord += Vector3(1, 0, -1)
 		
-		# compute q r s values for next row
-		if row == 0 or row % 2 == 0: last_cube_coord.x -= 1 # q
-		last_cube_coord.y += 1                              # r
-		if row % 2 != 0: last_cube_coord.z -= 1
+		last_row_cube_coord = compute_next_row_cube_coord(row, last_row_cube_coord)
 
+func compute_next_row_cube_coord(row: int, last_cube_coord: Vector3) -> Vector3:
+	var next_cube_coord = last_cube_coord + Vector3(
+		-1 if (row == 0 or even(row)) else 0,
+		1,
+		-1 if !even(row) else 0
+	)
+	
+	return next_cube_coord
+
+func instance_tile(col: int, row: int, initial_tile_cube_coord: Vector3):
+		var cartesian_coordinate = Vector2(
+			col - 0.5 if !even(row) else col + 0.0, 
+			row
+		)
+		var cube_coord = initial_tile_cube_coord 
+
+		var tile = tile_scene.instance()
+
+		tile.init(cartesian_coordinate, cube_coord, map_data[row][col], self)
+		tiles.add_child(tile)
 
 # reset the color of the hovered tile if there is any
 func reset_hover_hightlight():
@@ -95,8 +104,7 @@ func hexgrid_cube_coords():
 		if row % 2 != 0: s -= 1
 		r += 1
 
-		
-		
-		
-		
-			
+func even(number) -> bool:
+	# a number is even if the remainder of it
+	# being divided by 2 is 0
+	return number % 2 == 0
