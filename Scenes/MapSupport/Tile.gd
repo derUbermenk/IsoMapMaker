@@ -31,6 +31,7 @@ var y: float												 # non transformed y position assuming 1 as base height 
 var cube_coord: Vector3              # the cube coordinates of this tile x=q; y=r; z=s
 var terrain_type: String             # 
 var terrain_texture: Resource  			 # terrain texture associated with the terrain type
+var neighbors: PoolVector3Array
 
 var valid_build_location: bool                         # 
 var invalid_district_locations = ['ocean', 'mountain'] # invalid district build locations
@@ -63,6 +64,8 @@ func init(cartesian_coord: Vector2, cube_coord_: Vector3, terrain_type_, map_):
 	map = map_
 	terrain_type = terrain_type_
 	cube_coord = cube_coord_
+
+	get_neighbors()
 
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
@@ -132,6 +135,20 @@ func _on_TileArea_mouse_entered():
 			position = hover_position
 	
 	map.emit_signal("update_hovered_tile_details")
+
+func get_neighbors():
+	var direction_vectors: PoolVector3Array= [ 
+		# all direction as per q r s orientations
+		# https://www.redblobgames.com/grids/hexagons/#neighbors
+
+	Vector3(+1, 0, -1), Vector3(+1, -1, 0), Vector3(0, -1, +1), 
+	Vector3(-1, 0, +1), Vector3(-1, +1, 0), Vector3(0, +1, -1), 
+	]
+
+	for direction in direction_vectors:
+		neighbors.append(cube_coord + direction)
+	
+
 
 # hover response when map builder mode is set to TerraForm
 func _hover_on_TerraForm():
