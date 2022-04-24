@@ -59,6 +59,7 @@ func connect_tools(button_group: ButtonGroup, receiving_function: String):
 		_tool.connect("pressed", self, receiving_function, [_tool.get_name()])
 	
 func update_hovered_tile(tile: Tile):
-	get_node("ModeDebugger/TileDetails/Type").text = tile.terrain_type
-	get_node("ModeDebugger/TileDetails/CubeCoord").text = tile.cube_coord
+	get_node("TileDetails/Type").text = "Terrain Type: %s" % tile.terrain_type
+	get_node("TileDetails/CubeCoord").text = "Cube Coordinate: %s" % tile.cube_coord
+	get_node("TileDetails/CartesianCoord").text = "Cartesian Coordinate %s" % Vector2(tile.x, tile.y)
 		
