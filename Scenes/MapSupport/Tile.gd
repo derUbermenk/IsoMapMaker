@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name Tile
+
 # for vertical offset effect on mouse hover
 var hover_position
 var rest_position
@@ -26,8 +28,11 @@ var y_off = 0.8726 # didn't know how I came up with this
 var map: Node2D											 # map where the tile belongs 
 var x: float 												 # non transformed x position assuming 1 as base height unit
 var y: float												 # non transformed y position assuming 1 as base height unit
-var terrain_type: String             # 
+var cube_coord: Vector3              # the cube coordinates of this tile x=q; y=r; z=s
+var terrain_type: String = "ocean"   # ocean is default 
 var terrain_texture: Resource  			 # terrain texture associated with the terrain type
+var neighbors: Array 
+var neighbor_names: PoolStringArray
 
 var valid_build_location: bool                         # 
 var invalid_district_locations = ['ocean', 'mountain'] # invalid district build locations
@@ -36,6 +41,8 @@ var invalid_district_locations = ['ocean', 'mountain'] # invalid district build 
 var terraForm_hoverColor =  Color("f1fac3")
 var districtBuilder_validColor = Color("8dd983")
 var districtBuilder_invalidColor = Color("ffb0b0")
+var neighbor_highlight = Color("8be4ff")
+var self_view_highlight = Color("fff691")
 
 onready var tile_area = get_node("TileArea") 
 onready var terrain_sprite= get_node("Terrain")
@@ -52,11 +59,15 @@ func _process(delta):
 	# I added the the underscore below the name to prevent overshadowing
 	# which in turn causes problem with placing the right value for the node
 	# defined variable
-func init(x_, y_, terrain_type_, map_):
-	x = x_
-	y = y_
+	# cube_coord q == x; r == y; s == z
+func init(cartesian_coord: Vector2, cube_coord_: Vector3, map_):
+	# temporary just want to see if my code works
+	x = cartesian_coord.x 
+	y = cartesian_coord.y
 	map = map_
-	terrain_type = terrain_type_
+	cube_coord = cube_coord_
+
+	set_name("%s" % cube_coord)
 
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
@@ -123,7 +134,37 @@ func _on_TileArea_mouse_entered():
 		"DistrictBuilder":
 			_hover_on_DistrictBuilder()
 		"View":
-			position = hover_position
+			_hover_on_View()
+	
+	map.emit_signal("update_hovered_tile_details")
+
+func get_neighbors():
+	var direction_vectors: PoolVector3Array= [ 
+		# all direction as per q r s orientations
+		# https://www.redblobgames.com/grids/hexagons/#neighbors
+
+	Vector3(+1, 0, -1), Vector3(+1, -1, 0), Vector3(0, -1, +1), 
+	Vector3(-1, 0, +1), Vector3(-1, +1, 0), Vector3(0, +1, -1), 
+	]
+
+	# calculate neighbors first
+	for direction in direction_vectors:
+		var neighbor_coord = "%s" % (cube_coord + direction)
+		var neighbor_in_coord = map.tiles.get_node(neighbor_coord)
+
+		if  neighbor_in_coord != null: 
+			neighbors.append(neighbor_in_coord)
+			neighbor_names.append(neighbor_coord)
+
+# hover response when map builder mode is set to View
+func _hover_on_View():
+	if map.map_builder.highlight_neighbors:
+		highlight_self()
+		highlight_neighbors()
+	else:
+		# position = hover_position # offset position to make it look like the tile was elevated
+		# highlight self
+		highlight_self()
 
 # hover response when map builder mode is set to TerraForm
 func _hover_on_TerraForm():
@@ -138,12 +179,25 @@ func _hover_on_DistrictBuilder():
 	# like the hover color and the map
 	# hovered tile
 func _on_TileArea_mouse_exited():
-	if map.map_builder.mode == "View":
-		position = rest_position
-	else:
-		modulate = Color("ffffff")
+	unhighlight_self()
+	if map.map_builder.mode == "View": unhighlight_neighbors()
 
 	map.hovered_tile = null 
+
+func highlight_neighbors():
+	for neighbor in neighbors: neighbor.highlight_self_as_neighbor()
+
+func unhighlight_neighbors():
+	for neighbor in neighbors: neighbor.unhighlight_self()
+
+func highlight_self_as_neighbor():
+	modulate = neighbor_highlight
+
+func highlight_self():
+	modulate = self_view_highlight
+
+func unhighlight_self():
+	modulate = Color("ffffff")
 
 func _on_TileArea_input_event(viewport:Node, event:InputEvent, shape_idx:int):
 	var modify_tile_event: bool = event is InputEventMouseButton && event.is_pressed() && event.button_index == 1

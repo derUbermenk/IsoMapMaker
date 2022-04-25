@@ -58,5 +58,17 @@ func connect_tools(button_group: ButtonGroup, receiving_function: String):
 		# for their params.
 		_tool.connect("pressed", self, receiving_function, [_tool.get_name()])
 	
+func update_hovered_tile(tile: Tile):
+	get_node("TileDetails/Type").text = "Terrain Type: %s" % tile.terrain_type
+	get_node("TileDetails/CubeCoord").text = "Cube Coordinate: %s" % tile.cube_coord
+	get_node("TileDetails/CartesianCoord").text = "Cartesian Coordinate %s" % Vector2(tile.x, tile.y)
+	get_node("TileDetails/Neighbors").text = format_array(tile.neighbor_names, "Neighbors")
 
-		
+# formats an array to be more readable
+func format_array(collection, collection_name: String) -> String:
+	var formatted_output: String = "%s: \n" % collection_name
+	for item in collection:
+		var formatted_item = "\t %s \n" % item
+		formatted_output += formatted_item
+
+	return formatted_output

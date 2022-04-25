@@ -8,6 +8,7 @@
 
 [node name="MapBuilder" type="Node"]
 script = ExtResource( 5 )
+highlight_neighbors = true
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 4 )
@@ -204,5 +205,41 @@ margin_left = 280.0
 margin_top = 2.0
 margin_right = 280.0
 margin_bottom = 16.0
+
+[node name="TileDetails" type="VBoxContainer" parent="UI"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 20.0
+margin_top = -20.0
+margin_right = 40.0
+margin_bottom = 20.0
+grow_vertical = 2
+rect_min_size = Vector2( 200, 200 )
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Type" type="Label" parent="UI/TileDetails"]
+margin_top = 42.0
+margin_right = 200.0
+margin_bottom = 56.0
+text = "Terrain Type:"
+
+[node name="CubeCoord" type="Label" parent="UI/TileDetails"]
+margin_top = 76.0
+margin_right = 200.0
+margin_bottom = 90.0
+text = "Cube Coordinate:"
+
+[node name="CartesianCoord" type="Label" parent="UI/TileDetails"]
+margin_top = 110.0
+margin_right = 200.0
+margin_bottom = 124.0
+text = "Cartesian Coordinate:"
+
+[node name="Neighbors" type="Label" parent="UI/TileDetails"]
+margin_top = 144.0
+margin_right = 200.0
+margin_bottom = 158.0
+text = "Neighbors:"
 
 [node name="Map" parent="." instance=ExtResource( 1 )]
