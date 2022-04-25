@@ -3,6 +3,7 @@ extends Node
 var build_modes = ["View", "TerraForm", "DistrictBuilder"]
 var mode = build_modes[0] 
 var mode_type = "None"
+export var highlight_neighbors = false 
 
 onready var ui = get_node("UI")
 onready var map = get_node("Map")

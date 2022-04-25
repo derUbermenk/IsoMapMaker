@@ -8,6 +8,7 @@
 
 [node name="MapBuilder" type="Node"]
 script = ExtResource( 5 )
+highlight_neighbors = true
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 4 )
