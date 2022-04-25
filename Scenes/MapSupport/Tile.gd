@@ -29,9 +29,9 @@ var map: Node2D											 # map where the tile belongs
 var x: float 												 # non transformed x position assuming 1 as base height unit
 var y: float												 # non transformed y position assuming 1 as base height unit
 var cube_coord: Vector3              # the cube coordinates of this tile x=q; y=r; z=s
-var terrain_type: String             # 
+var terrain_type: String = "ocean"   # ocean is default 
 var terrain_texture: Resource  			 # terrain texture associated with the terrain type
-var neighbors: PoolVector3Array
+var neighbors: PoolStringArray 
 
 var valid_build_location: bool                         # 
 var invalid_district_locations = ['ocean', 'mountain'] # invalid district build locations
@@ -57,15 +57,14 @@ func _process(delta):
 	# which in turn causes problem with placing the right value for the node
 	# defined variable
 	# cube_coord q == x; r == y; s == z
-func init(cartesian_coord: Vector2, cube_coord_: Vector3, terrain_type_, map_):
+func init(cartesian_coord: Vector2, cube_coord_: Vector3, map_):
 	# temporary just want to see if my code works
 	x = cartesian_coord.x 
 	y = cartesian_coord.y
 	map = map_
-	terrain_type = terrain_type_
 	cube_coord = cube_coord_
 
-	get_neighbors()
+	set_name("%s" % cube_coord)
 
 # set converted tile positions to screen coords from isometric plane
 	# and vertical offset values when hovering
@@ -145,9 +144,13 @@ func get_neighbors():
 	Vector3(-1, 0, +1), Vector3(-1, +1, 0), Vector3(0, +1, -1), 
 	]
 
+	# calculate neighbors first
 	for direction in direction_vectors:
-		neighbors.append(cube_coord + direction)
-	
+		var neighbor_coord = "%s" % (cube_coord + direction)
+		print(neighbor_coord)
+
+		if map.tiles.get_node(neighbor_coord) != null:
+			neighbors.append(neighbor_coord)
 
 
 # hover response when map builder mode is set to TerraForm

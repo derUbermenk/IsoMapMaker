@@ -8,20 +8,6 @@ var tile_scene = load("res://Scenes/MapSupport/Tile.tscn")
 # represents number of tiles
 var world_size = 5 
 
-# just delete this later only for tests
-var ocean = "ocean"
-var forest = "forest"
-var plain = "plain"
-var asphalt = "asphalt"
-
-var map_data = [
-	[ocean, ocean, ocean, ocean, ocean ],
-	[ocean, ocean, ocean, ocean, ocean ],
-	[ocean, ocean, ocean, ocean, ocean ],
-	[ocean, ocean, ocean, ocean, ocean ],
-	[ocean, ocean, ocean, ocean, ocean ],
-]
-
 var hovered_tile
 var paint_mode = false
 
@@ -48,6 +34,11 @@ func draw_map():
 			initial_tile_cube_coord += Vector3(1, 0, -1)
 		
 		last_row_cube_coord = compute_next_row_cube_coord(row, last_row_cube_coord)
+	
+	# calculate the neighbor of the tile once the tiles have been placed
+	for tile in tiles.get_children():
+		tile.get_neighbors()
+
 
 func compute_next_row_cube_coord(row: int, last_cube_coord: Vector3) -> Vector3:
 	var next_cube_coord = last_cube_coord + Vector3(
@@ -67,13 +58,16 @@ func instance_tile(col: int, row: int, initial_tile_cube_coord: Vector3):
 
 		var tile = tile_scene.instance()
 
-		tile.init(cartesian_coordinate, cube_coord, map_data[row][col], self)
+		tile.init(cartesian_coordinate, cube_coord, self)
 		tiles.add_child(tile)
 
 # reset the color of the hovered tile if there is any
 func reset_hover_hightlight():
 	if hovered_tile != null:
 		hovered_tile.modulate = Color(1, 1, 1)
+	pass
+
+func highlight_neighbors():
 	pass
 
 func track_mouse_loc():
