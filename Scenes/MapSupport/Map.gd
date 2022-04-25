@@ -64,7 +64,7 @@ func instance_tile(col: int, row: int, initial_tile_cube_coord: Vector3):
 # reset the color of the hovered tile if there is any
 func reset_hover_hightlight():
 	if hovered_tile != null:
-		hovered_tile.modulate = Color(1, 1, 1)
+		hovered_tile.unhighlight_self()
 	pass
 
 func highlight_neighbors():
